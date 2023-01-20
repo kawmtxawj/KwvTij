@@ -1,0 +1,208 @@
+package model;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import ui.DialogCreatYawgKoobTop;
+import ui.DialogDeleteTibNeeg;
+import ui.DialogModifyTibNeeg;
+import control.Control_UI;
+
+/**
+ * This class allows to manage and modify Tib Neeg with the UI and Control class
+ * @author Kao Vang
+ *
+ */
+public class YawmSaub {
+	
+	//protected ArrayList<TibNeeg> list_tn;
+	private TibNeeg yawgKoobTop;			// Tus yawg koob top tshaj plaws, nws txiv = null
+	private ShowHierarchy showHierar;
+	
+	public YawmSaub(TibNeeg yawgKoob) {
+		this.yawgKoobTop = yawgKoob;
+		showHierar = new ShowHierarchy();
+	}
+	
+	/**
+	 * Create a new Tib Neeg and link to his Txiv (initial covMenyuam null)
+	 * @param tx - His txiv
+	 * @param npe - His npe
+	 * @param xeem - His xeem
+	 * @return true - if create success
+	 */
+	public int createTibNeeg(TibNeeg tx, String npe, String xeem) {
+		if( !npe.equals("") && !xeem.equals("")){
+			TibNeeg tn = new TibNeeg(npe, xeem);
+			tn.setTxiv(tx);
+			if(isTibNeegExist(tn)){
+				return 0;			// Create Tib neeg fail, if tn is already exist in family tree
+			}
+			tx.ntxivTub(tn);
+			return 1;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Get tag nhro cov me nyuam thiab cov xeeb leej xeeb ntxwv tag nhro uas nyob qes dua ntawm tus yawg no, include tus yawg no thiab.
+	 * @param tn - Tus yawg uas pib nrhiav
+	 */
+	public ArrayList<TibNeeg> getTagNhroCovMeNyuamLawmHauv(TibNeeg tn){
+		ArrayList<TibNeeg> list = new ArrayList<TibNeeg>();
+		ArrayList<TibNeeg> list_tn = new ArrayList<TibNeeg>();		
+		
+		list.add(tn);
+		ListIterator<TibNeeg> litr = list.listIterator();	// make iterative list 
+		
+		while(litr.hasNext()) {
+			TibNeeg tn_tmp = (TibNeeg) litr.next();			// Tibneeg tempo
+			if(tn_tmp.isMuajMeNyuam()){
+				list.addAll(tn_tmp.getCovTub());			// Get all cov tub
+			}
+			list_tn.add(tn_tmp);							// 
+			list.remove(tn_tmp);
+			litr = list.listIterator();						// update list tempo
+		}
+		
+		return list_tn;
+	}
+	
+	/**
+	 * Print in System.out hierarchy all TibNeeg 
+	 */
+	public void showHierarchy() {
+		showHierarchyPibNtawmIbTugYawg(yawgKoobTop);
+	}
+	
+	/**
+	 * Print in System.out hierarchy all TibNeeg pib ntawm
+	 * @param tn
+	 */
+	public void showHierarchyPibNtawmIbTugYawg(TibNeeg tn) {
+		this.showHierar.showTusYawgNoDown(tn);
+	}
+	
+	public ArrayList<TibNeeg> getTagNrhoTshobTree(){
+		return getTagNhroCovMeNyuamLawmHauv(this.yawgKoobTop);
+	}
+	
+	/* File */
+	public void save(TibNeeg tn) {
+		try {
+			FileOutputStream fichier = new FileOutputStream("tibneeg.kao");
+			ObjectOutputStream oos = new ObjectOutputStream(fichier);
+			oos.writeObject(tn);
+			oos.flush();
+			oos.close();
+			System.out.println("+++++> Save OK");
+		}catch (java.io.IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public TibNeeg getYawgKoobTop() {
+		return this.yawgKoobTop;
+	}
+	
+	public void setYawgKoobTop(TibNeeg yawgKoobTop) {
+		this.yawgKoobTop = yawgKoobTop;
+	}
+
+	/**
+	 * Show dialog to creat Txiv Tshiab
+	 * @param frame - the frame that dialog will display on
+	 * @param cltr_ui - Control of frame
+	 */
+	public void creatTxivTshiabDialog(Control_UI cltr_ui) {
+		new DialogCreatYawgKoobTop(cltr_ui);
+	}
+
+	/**
+	 * Create Txiv and link to the autre Me nyuam
+	 * @param npe - tus txiv tshiab npe
+	 * @param xeem - tus txiv tshiab xeem
+	 * @param meNyuam - tus me nyuam uas tus txiv yuav link nrog
+	 * @param tx - tus me txiv uas tus txiv yuav link nrog
+	 */
+	public void createTxivTshiab(String npe, String xeem, TibNeeg meNyuam, TibNeeg tx) {
+		if( !npe.equals("") && !xeem.equals("")){
+			TibNeeg tn = new TibNeeg(npe, xeem);
+			meNyuam.setTxiv(tn);	// Set tus meNyuam txiv
+			if(tx != null){
+				tn.setTxiv(tx);		// Update tus txiv tshaib tus txiv 
+			}
+			tn.ntxivTub(meNyuam);	// Ntxiv meNyuam rau hauv tus txiv tshiab list
+			updateYawgKoobTop(tn);	// Update tus yawg koob top
+			System.out.println("-> Create Txiv Ok");
+		}
+	}
+
+	/**
+	 * Update tus yawg koob top
+	 * @param tn - yawg koob top to update
+	 */
+	private void updateYawgKoobTop(TibNeeg tn) {
+		setYawgKoobTop(tn);		
+	}
+
+
+	/**
+	 * Launch Dialog to delete Tib Neeg
+	 * @param cltr_ui - Control
+	 */
+	public void deleteTibNeegDialog(Control_UI cltr_ui) {
+		new DialogDeleteTibNeeg(cltr_ui);
+	}
+
+	/**
+	 * Delete a Tib Neeg in parameter existed from tree
+	 * @param tn - Tib Neeg for delete
+	 */
+	public void deleteTibNeeg(TibNeeg tn) {
+		if(tn.hasTxiv()){
+			TibNeeg tx = tn.getTxiv();
+			tx.getCovTub().remove(tn);
+			System.out.println("*** Delete [ "+tn+" ] --> OK");
+		}else{
+			System.out.println("*** [ "+tn+" ] yog tus yawg koob top lawm. Attention Cov Me nyuam!");
+		}
+	}
+	
+	/**
+	 * Verify if Tib neeg in parameter is exist in family tree
+	 * @param tn - Tib neeg to verify
+	 * @return true - if tn exist
+	 */
+	public boolean isTibNeegExist(TibNeeg tn) {
+		ListIterator<TibNeeg> list_ite = getTagNrhoTshobTree().listIterator();
+		while(list_ite.hasNext()){
+			if(list_ite.next().isTibNeegEgauls(tn)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Display dialog to modify a Tib Neeg
+	 * @param cltr_ui - Control of UI
+	 */
+	public void modifyTibNeegDialog(Control_UI cltr_ui) {
+		new DialogModifyTibNeeg(cltr_ui);
+	}
+
+	public void modifyTibNeeg(TibNeeg tn, String npe, String xeem, String tebChawYug) {
+		tn.setNpe(npe);
+		tn.setXeem(xeem);
+		tn.setTebChawYug(tebChawYug);
+		
+		System.out.println("** Modification --> OK");
+	}
+	
+	
+
+}

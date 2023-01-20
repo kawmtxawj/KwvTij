@@ -1,0 +1,84 @@
+package ui;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+
+public class UIDraw extends Canvas {
+
+	/**
+	 * Serial default UID
+	 */
+	private static final long serialVersionUID = 1L;
+	private Image image;
+	private Point begin;
+	private Point end;
+	
+	
+	
+	public UIDraw(Dimension d, Point bg, Point end) {
+		
+		//this.setPreferredSize(new Dimension(800, 400));
+		this.setPreferredSize(d);
+		this.begin = bg;
+		this.end = end;
+		
+		
+	}
+	
+	
+	/**
+	 * Recreation du dessin (on reinitialise tout)
+	 * @param g Graphique
+	 */
+	@Override
+	public void paint(Graphics g) {
+		this.reinitialise();
+		//Point position = new Point(this.getWidth()/2 * 100, this.getHeight()/2 * 100);
+		Point point1 =  new Point(this.getWidth()/2, this.getHeight()/2);
+		Point point2 =  new Point(this.getWidth()/3, this.getHeight()/2);
+		Color color = Color.BLACK;
+		
+		//dessinerTrait(point1, point2, color);
+		Dimension d = this.getSize();
+		g.setColor(Color.BLACK);
+		//50,d.height/2,d.width-50,d.height/2
+		
+		//Point begin = new Point(50,d.height/2);
+		//Point end = new Point(d.width-50,d.height/2);
+		
+		g.drawLine(begin.x, begin.y, end.x, end.y );
+		
+		//creatLineHorizontal(g, this.begin, this.end );
+	}
+
+	private void creatLineHorizontal(Graphics g, Point begin, Point end) {
+		
+		//g.drawLine(begin.x, begin.y, end.x, end.y );
+		
+		
+	}
+
+
+	/** Reinitialisation du dessin */
+	public void reinitialise() {
+		// Le background
+		this.image = createImage(this.getWidth(), this.getHeight());
+		Graphics gImage = this.image.getGraphics();
+		gImage.setColor(Color.WHITE);
+		gImage.fillRect(0, 0, this.getWidth(), this.getHeight());
+	}
+	
+	public void dessinerTrait(Point pointDepart, Point pointArrive, Color couleur) {
+		Graphics2D trait = (Graphics2D)this.image.getGraphics();
+		trait.scale(0.01, 0.01);
+		trait.setColor(couleur);
+		//trait.drawLine(pointDepart.x, pointDepart.y, pointArrive.x, pointArrive.y);
+		
+	}
+	
+}

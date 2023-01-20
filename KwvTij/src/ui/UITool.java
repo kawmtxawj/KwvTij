@@ -1,0 +1,115 @@
+package ui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JToolBar;
+
+import control.Control_UI;
+
+public class UITool extends JToolBar{
+	
+	/**
+	 * Default serial UID
+	 */
+	private static final long serialVersionUID = 1L;
+	private Control_UI cltr_ui;
+	private ButtonListener listener;
+	
+	private JButton button_save;
+	private JButton button_creatTn;
+	private JButton button_showHiera;
+	private JButton button_creatTx;
+	private JButton button_deleteTn;
+	private JButton button_modifyTn;
+	private JButton button_NtxivTn;
+	
+	
+	public UITool(Control_UI con_ui) {
+		this.cltr_ui = con_ui;
+		listener = new ButtonListener();
+		
+		button_save = new JButton(new ImageIcon("./images/save.png"));
+		button_save.setToolTipText("Save");
+		button_save.addActionListener(listener);
+		add(button_save);
+		
+		button_creatTn = new JButton(new ImageIcon("./images/tibneeg.png"));
+		button_creatTn.setToolTipText("Ntxiv Neeg");
+		button_creatTn.addActionListener(listener);
+		add(button_creatTn);
+		
+		button_showHiera = new JButton(new ImageIcon("./images/showhierarchy.png"));
+		button_showHiera.setToolTipText("Display hierarchy");
+		button_showHiera.addActionListener(listener);
+		
+		/*
+		button_showHiera.addActionListener(new ActionListener() {				// Add action listener "Display hierarchy"
+			public void actionPerformed(ActionEvent evt) {					// Action
+				Control_UI.getInstance().showHierarchy();
+			}
+		});
+		*/
+		
+		add(button_showHiera);
+		
+		button_creatTx = new JButton(new ImageIcon("./images/tibneeg.png"));
+		button_creatTx.setToolTipText("Ntxiv txiv tshiab");
+		button_creatTx.addActionListener(listener);
+		add(button_creatTx);
+		
+		button_deleteTn = new JButton(new ImageIcon("./images/deleteTn.png"));
+		button_deleteTn.setToolTipText("Delete tib neeg");
+		button_deleteTn.addActionListener(listener);
+		add(button_deleteTn);
+		
+		button_modifyTn = new JButton(new ImageIcon("./images/tibneeg.png"));
+		button_modifyTn.setToolTipText("Modify Neeg");
+		button_modifyTn.addActionListener(listener);
+		add(button_modifyTn);
+
+		button_NtxivTn = new JButton(new ImageIcon("./images/tibneeg.png"));
+		button_NtxivTn.setToolTipText("Ntxiv Neeg");
+		button_NtxivTn.addActionListener(listener);
+		add(button_NtxivTn);
+		
+	}
+	
+	/* Listener */
+	private class ButtonListener implements ActionListener {
+		  public void actionPerformed (ActionEvent event) {
+		    Object source = event.getSource();
+
+		    if (source == button_save) {
+		    	
+		    }
+		    
+		    if (source == button_showHiera) {
+		        cltr_ui.showHierarchy();
+		    }
+		    
+		    if (source == button_creatTx) {
+		    	System.out.println("Create Txiv tshiab!");
+		    	cltr_ui.creatTxivTshiabDialog();
+		    }
+		    
+		    if (source == button_deleteTn) {
+		    	cltr_ui.deleteTibNeegDialog(cltr_ui);
+		    }
+		    
+		    if (source == button_modifyTn) {
+		    	cltr_ui.modifyTibNeegDialog(cltr_ui);
+		    }
+		    
+		    //Listen to the Ntxiv Tib Neeg button
+		    if (source == button_NtxivTn) {
+		    	cltr_ui.ntxivTibNeegDialog(cltr_ui);
+		    }
+		    
+		    
+		  }
+	 }
+	
+}

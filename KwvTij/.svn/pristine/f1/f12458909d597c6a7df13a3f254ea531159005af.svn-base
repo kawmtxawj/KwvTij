@@ -1,0 +1,136 @@
+package control;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+
+import model.ManageFile;
+import model.TibNeeg;
+import model.YawmSaub;
+
+import ui.DialogDeleteTibNeeg;
+import ui.KaoFrame;
+
+public class Control_UI {
+	
+	private static Control_UI instance;
+	private YawmSaub yawmSaub;
+	private ManageFile manageFile;
+		
+	private KaoFrame frame;
+	
+	/**
+	 * Contructor
+	 */
+	public Control_UI() {
+		
+		TibNeeg vamSawm = new TibNeeg("Vam Sawm", "Vaj");// Thawj tug yawg
+		this.yawmSaub = new YawmSaub(vamSawm);
+		this.frame = new KaoFrame("Kao's window", this);
+		this.manageFile = new ManageFile(this.frame, this);
+	}
+	
+	/**
+	 * Get all Tib Neeg ntawm tshob Tree
+	 * @return all Tib Neeg
+	 */
+	public ArrayList<TibNeeg> getThsobTree() {
+		return yawmSaub.getTagNrhoTshobTree();
+	}
+	
+
+	public int creatTibNeeg(TibNeeg tx, String npe, String xeem) {
+		return this.yawmSaub.createTibNeeg(tx, npe, xeem);
+	}
+	
+	
+
+	public void openFile() {
+		this.manageFile.openFileFamilyTree();
+	}
+
+	
+	public void saveFile() {
+		this.manageFile.save();
+	}
+	
+	public void saveFileAs() {
+		this.manageFile.saveAs();
+	}
+	
+	public void launch() {
+		this.frame.show();
+	}
+	
+	public void showHierarchy() {
+		this.yawmSaub.showHierarchy();
+	}
+	public YawmSaub getYawmSaub() {
+		return this.yawmSaub;
+	}
+
+	public void setYawgKoobTop(TibNeeg ykTop) {
+		this.yawmSaub.setYawgKoobTop(ykTop);
+		
+	}
+	
+	public static synchronized Control_UI getInstance() {
+		if(instance == null) {
+			instance = new Control_UI();
+		}
+		return instance;
+	}
+
+	/**
+	 * Show dialog for creation of Txiv Tshiab
+	 */
+	public void creatTxivTshiabDialog() {
+		this.yawmSaub.creatTxivTshiabDialog(this);
+	}
+	
+	/**
+	 * Call to create Txiv tshiab and link to his Txiv and his me nyuam
+	 * @param npe - His npe 
+	 * @param xeem - His xeem
+	 * @param meNyuam - His me nyuam to link to 
+	 * @param tx - His txiv to link to
+	 */
+	public void createTxivTshiab(String npe, String xeem, TibNeeg meNyuam, TibNeeg tx) {
+		this.yawmSaub.createTxivTshiab( npe, xeem, meNyuam, tx);
+	}
+	
+	public KaoFrame getFrame() {
+		return frame;
+	}
+
+	public void deleteTibNeegDialog(String npe, String xeem, TibNeeg meNyuam, TibNeeg tx) {
+		this.yawmSaub.deleteTibNeegDialog(this);
+	}
+
+	/**
+	 * Launch Dialog to delete Tib Neeg
+	 * @param cltr_ui - Control
+	 */
+	public void deleteTibNeegDialog(Control_UI cltr_ui) {
+		this.yawmSaub.deleteTibNeegDialog(cltr_ui);
+	}
+	
+	public void deleteTibNeeg(TibNeeg tn) {
+		this.yawmSaub.deleteTibNeeg(tn);
+	}
+
+	public void modifyTibNeegDialog(Control_UI cltr_ui) {
+		this.yawmSaub.modifyTibNeegDialog(cltr_ui);
+		
+	}
+
+	public void modifyTibNeeg(TibNeeg tn, String npe, String xeem, String tebChawYug) {
+		this.yawmSaub.modifyTibNeeg(tn, npe, xeem, tebChawYug);
+		
+	}
+
+	
+
+	
+
+}

@@ -1,0 +1,318 @@
+package model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * This class allows to create a Tib Neeg who might link to his Txiv and his Cov menyuam 
+ * @author Kao Vang
+ *
+ */
+public class TibNeeg implements Comparator<TibNeeg>, Serializable{
+	/**
+	 * The serial UID default
+	 */
+	private static final long serialVersionUID = 1L;
+	private String npe;					// Npe laus
+	private String xeem;				// Xeem
+	private String npeHluas;			// Lub npe hluas
+	private String hnubYug;				// Hnub yug (yog paub)
+	private String hnubTuag;			// Hnub tag sim neej (yog paub)
+	private String dabNeeg;				// Zaj dab neeg
+	private String tebChawYug;			// Lub teb chaw yug
+	private String zosYug;				// Lub zos yug
+	private String tebChawTuag;			// Lub teb chaw tag sim neej
+	private String zosTuag;				// Lub zos tag sim neej
+	
+	private TibNeeg txiv;				// Txiv yug
+	private List<TibNeeg> covTub;		// Cov me nyuam
+	private List<TibNeeg> covPojNiam ;		// Cov me nyuam
+	private boolean uaNeeb;				// Puas txawj ua neeb?
+	
+	/*
+	 * Constructors 
+	 */
+	/**
+	 * Create a Tib Neeg with npe xeem and his Txiv
+	 * @param npe - His npe
+	 * @param xeem - His xeem
+	 * @param txiv - His Txiv
+	 */
+	public TibNeeg(String npe, String xeem, TibNeeg txiv ) {
+		this.covTub = new ArrayList<>();
+		this.covPojNiam = new ArrayList<>();
+		initialTibNeeg(npe, xeem, "", "", "", "", "", "", "", "", txiv, false);
+	}
+	
+	/**
+	 * Create a Tib Neeg with npe and xeem
+	 * @param npe - His npe
+	 * @param xeem - His xeem
+	 */
+	public TibNeeg(String npe, String xeem ) {
+		this.covTub = new ArrayList<>();
+		this.covPojNiam = new ArrayList<>();
+		initialTibNeeg(npe, xeem, "", "", "", "", "", "", "", "", null, false);
+	}
+	
+	/**
+	 * Constructor with all attributes in parameter
+	 * @param npe
+	 * @param xeem
+	 * @param npeHluas
+	 * @param hnubYug
+	 * @param hnubTagSimNeej
+	 * @param dabNeeg
+	 * @param tebChawYug
+	 * @param zosYug
+	 * @param tebChawTuag
+	 * @param zosTuag
+	 * @param tx
+	 * @param uaN
+	 */
+	public TibNeeg(String npe,String xeem, String npeHluas, String hnubYug, String hnubTagSimNeej,
+			String dabNeeg, String tebChawYug, String zosYug, String tebChawTuag, String zosTuag, TibNeeg tx, boolean uaN){
+		this.covTub = new ArrayList<>();
+		this.covPojNiam = new ArrayList<>();
+		initialTibNeeg(npe, xeem, npeHluas, hnubYug, hnubTagSimNeej, dabNeeg, tebChawYug, zosYug, tebChawTuag, zosTuag, tx, uaN);
+	}
+	
+	public void initialTibNeeg(String npe,String xeem, String npeHluas, String hnubYug, String hnubTagSimNeej,
+				String dabNeeg, String tebChawYug, String zosYug, String tebChawTuag, String zosTuag, TibNeeg tx, boolean uaN) {
+		this.npe 		= npe;
+		this.xeem 		= xeem;
+		this.npeHluas 	= npeHluas;
+		this.hnubYug 	= hnubYug;
+		this.hnubTuag 	= hnubTagSimNeej;
+		this.dabNeeg 	= dabNeeg;
+		this.tebChawYug = tebChawYug;
+		this.zosYug 	= zosYug;
+		this.tebChawTuag= tebChawTuag;
+		this.zosTuag 	= zosTuag;
+		this.txiv 		= tx;
+		this.uaNeeb 	= uaN;
+	}
+	
+	/*
+	 *End contructors 
+	 */
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * Generate Getting & Setting
+	 */
+	public String getNpe() {
+		return npe;
+	}
+
+	public void setNpe(String npe) {
+		this.npe = npe;
+	}
+
+	public String getNpeHluas() {
+		return npeHluas;
+	}
+
+	public void setNpeHluas(String npeHluas) {
+		this.npeHluas = npeHluas;
+	}
+
+	public String getXeem() {
+		return xeem;
+	}
+
+	public void setXeem(String xeem) {
+		this.xeem = xeem;
+	}
+
+	public String getHnubYug() {
+		return hnubYug;
+	}
+
+	public void setHnubYug(String hnubYug) {
+		this.hnubYug = hnubYug;
+	}
+
+	public String getHnubTagSimNeej() {
+		return hnubTuag;
+	}
+
+	public void setHnubTagSimNeej(String hnubTagSimNeej) {
+		this.hnubTuag = hnubTagSimNeej;
+	}
+
+	public TibNeeg getTxiv() {
+		return txiv;
+	}
+
+	public void setTxiv(TibNeeg txiv) {
+		this.txiv = txiv;
+	}
+
+	public List<TibNeeg> getCovTub() {
+		return covTub;
+	}
+
+	public void setCovTub(List<TibNeeg> covTub) {
+		this.covTub = covTub;
+	}
+
+	public String getDabNeeg() {
+		return dabNeeg;
+	}
+
+	public void setDabNeeg(String dabNeeg) {
+		this.dabNeeg = dabNeeg;
+	}
+	
+	public void ntxivTub(TibNeeg tn) {
+		this.covTub.add(tn);
+	}
+	
+	public TibNeeg getTusTubhib(int thib){
+		return this.covTub.get(thib);		
+	}
+	
+	public int countCovTub(){
+		return this.covTub.size();
+	}
+	
+	public String getNpeXeem(){
+		return this.npe+" "+this.xeem;
+	}
+	
+	public String getHnubTuag() {
+		return hnubTuag;
+	}
+		
+	public String getTebChawYug() {
+		return tebChawYug;
+	}
+
+	public void setTebChawYug(String tebChawYug) {
+		this.tebChawYug = tebChawYug;
+	}
+
+	public String getTebChawTuag() {
+		return tebChawTuag;
+	}
+
+	public void setTebChawTuag(String tebChawTuag) {
+		this.tebChawTuag = tebChawTuag;
+	}
+
+	public boolean isUaNeeb() {
+		return uaNeeb;
+	}
+
+	public void setUaNeeb(boolean uaNeeb) {
+		this.uaNeeb = uaNeeb;
+	}
+
+	public void setHnubTuag(String hnubTuag) {
+		this.hnubTuag = hnubTuag;
+	}
+
+	public String getZosYug() {
+		return zosYug;
+	}
+
+	public void setZosYug(String zosYug) {
+		this.zosYug = zosYug;
+	}
+
+	public String getZosTuag() {
+		return zosTuag;
+	}
+
+	public void setZosTuag(String zosTuag) {
+		this.zosTuag = zosTuag;
+	}
+
+	public List<TibNeeg> getCovPojNiam() {
+		return covPojNiam;
+	}
+
+	public void setCovPojNiam(List<TibNeeg> covPojNiam) {
+		this.covPojNiam = covPojNiam;
+	}
+
+	/**
+	 * Test yog tus no puas muaj tub
+	 * @return false - yog muaj <=0
+	 */
+	public boolean isMuajMeNyuam(){
+		return !this.covTub.isEmpty();
+	}
+	
+	
+	@Override 
+	public String toString() {
+		String str = new String();
+		str = this.npe +" "+this.xeem;
+		if(this.txiv != null){
+			str = str.concat(" - "+this.txiv.getNpe());
+		}
+		return str;
+	}
+
+	@Override
+	public int compare(TibNeeg o1, TibNeeg o2) {
+		
+		/*if(o1.getNpe().compareTo(o2.getNpe()) > 0){
+			return 1;
+		}else{
+			if(o1.getNpe().compareTo(o2.getNpe()) > 0){
+				return -1;
+			}
+		}
+		return 0;
+		*/
+		return o1.getNpe().compareTo(o2.getNpe());
+	}
+	
+	public int compareTibNeeg(TibNeeg tn) {
+		return this.getNpe().compareTo(tn.getNpe());
+	}
+
+	/**
+	 * Test if has Tciv
+	 * @return true - if txiv exist
+	 */
+	public boolean hasTxiv() {
+		return this.txiv != null;
+	}
+	
+	/**
+	 * Test if Tib Neeg in parameter is equals this
+	 * @param tn - tn to compare
+	 * @return true - if is equal
+	 */
+	public boolean isTibNeegEgauls(TibNeeg tn) {
+		boolean exist = false;
+		exist = getNpe().compareTo(tn.getNpe())==0 && getXeem().compareTo(tn.getXeem())==0;
+		if(this.isMuajTxiv() && tn.isMuajTxiv()){
+			exist = exist && getTxiv().compareTibNeeg(tn.getTxiv())==0;		// Test isTxivEqual if txiv exist 
+		}
+		return exist;
+	}
+	
+	/**
+	 * Test if Txiv exist
+	 * @return true - if Txiv exist
+	 */
+	public boolean isMuajTxiv() {
+		return this.txiv != null;
+	}
+}

@@ -1,0 +1,103 @@
+package model;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import javax.swing.JFileChooser;
+
+import control.Control_UI;
+
+import ui.KaoFrame;
+
+public class ManageFile {
+	
+	private KaoFrame frame ;
+	private Control_UI cltr_ui;
+	private String filepath;
+	
+	public ManageFile(KaoFrame frame, Control_UI con_ui) {
+		this.frame = frame;
+		this.cltr_ui = con_ui;
+		this.filepath = null;
+	}
+
+	/**
+	 * Menu "Open" : Chargement d'une grille de sudoku
+	 */
+	public void openFileFamilyTree() {
+		KuajFile filter = new KuajFile("File Poj Koob Yawg Txwv (*.kao)", ".kao");
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(this.frame.getWindow());
+	    if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    	chooser.getCurrentDirectory();
+	    	File file = chooser.getSelectedFile();
+	    	this.filepath = file.getPath();
+	    	charger();
+	    	
+	    	// Reflash interface
+			//this.gs.actualiserGrille();
+			//this.histo.actualiser();
+			//this.fichier = null;
+	    }
+	}
+	
+	public void charger() {
+		try{
+			FileInputStream fis = new FileInputStream(this.filepath);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			Object yawgKoobTop = ois.readObject();
+			ois.close();
+			this.cltr_ui.setYawgKoobTop((TibNeeg) yawgKoobTop);
+			this.frame.updateComboBox();
+			
+		}catch(Exception e) {
+			System.out.println("Tsis muaj file no.");
+		}
+	}
+
+	/**
+	 * Menu "enregistrer" : Nouvel enregistrement de la grille de sudoku
+	 */
+	public void saveAs() {
+		KuajFile filter = new KuajFile("File Poj Koob Yawg Txwv (*.kao)", ".kao");
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(filter);
+		int returnVal = chooser.showSaveDialog(this.frame.getWindow());
+	    if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    	chooser.getCurrentDirectory();
+	    	File file = chooser.getSelectedFile();
+	    	String path = file.getPath();
+	    	if (!path.endsWith(filter.getExtension())) path+=".kao";
+	    	this.filepath = path;
+	    	saveObject();
+	    }
+	}
+	
+	private void saveObject() {
+		try{
+			FileOutputStream fos = new FileOutputStream(this.filepath);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this.cltr_ui.getYawmSaub().getYawgKoobTop());
+			oos.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * Menu "enregistrer" : Enregistrement de la grille de sudoku
+	 */
+	public void save() {
+		if (this.filepath == null)
+			saveAs();
+		else
+			saveObject();
+	}
+	
+}

@@ -1,0 +1,116 @@
+package ui;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+
+import javax.swing.JLabel;
+
+import model.TibNeeg;
+import model.YawmSaub;
+
+public class UIPanelDrawFailyTree extends Canvas {
+
+	/**
+	 * Serial default UID
+	 */
+	private static final long serialVersionUID = 1L;
+	private Image image;
+	private Point begin;
+	private Point end;
+	private String myString ;
+	
+	private YawmSaub yawmSaub;	// For can call their functions
+	private TibNeeg tusTop;		// Tus yawg top to display his descendants 
+	
+	public UIPanelDrawFailyTree(YawmSaub yawmSaub, TibNeeg tnTop) {
+		
+		this.setPreferredSize(new Dimension(1000, 600));
+		this.yawmSaub = yawmSaub;
+		this.tusTop = tnTop;
+		
+		this.myString = "Kao's test draw string";
+		
+		
+	}
+	
+
+	/**
+	 * Recreation du dessin (on reinitialise tout)
+	 * @param g Graphique
+	 */
+	@Override
+	public void paint(Graphics g) {
+		
+		initialSize();
+		
+		//this.reinitialise();
+		//Point position = new Point(this.getWidth()/2 * 100, this.getHeight()/2 * 100);
+		//Point point1 =  new Point(this.getWidth()/2, this.getHeight()/2);
+		//Point point2 =  new Point(this.getWidth()/3, this.getHeight()/2);
+		//Color color = Color.BLACK;
+		
+		//dessinerTrait(point1, point2, color);
+		Dimension d = this.getSize();
+		//this.setPreferredSize(new Dimension(800, 400));
+		g.setColor(Color.BLACK);
+		//50,d.height/2,d.width-50,d.height/2
+		
+		//Point begin = new Point(50,d.height/2);
+		//Point end = new Point(d.width-50,d.height/2);
+		
+		g.drawLine(begin.x, begin.y, end.x, end.y );
+		//g.drawString("Kao Vaj", begin.x, begin.y);
+		
+		// First person position
+		int x = (int) ((d.getWidth()/2)-50);
+		int y = (int) ((d.getHeight()-d.getHeight()) + 30);
+		
+		
+		drawNpe(g, tusTop.getNpeXeem(), x, y);
+		
+		//creatLineHorizontal(g, this.begin, this.end );
+	}
+
+	
+	private void drawNpe(Graphics g, String npeXeem, int x, int y) {
+		g.drawString(npeXeem, x, y);
+		
+	}
+
+
+	private void initialSize() {
+		/* +++++ Have to modify for adapt to the size of their descendants ++++++++++++ */
+		Dimension d = new Dimension(800, 500);
+		Point begin = new Point(50,d.height/2);
+		Point end = new Point(d.width-50,d.height/2);
+		/* +++++ ++++++++++++++++++++++++++++++++ ++++++++++++ */
+		
+		this.setPreferredSize(d);
+		this.begin = begin;
+		this.end = end;
+	}
+	
+
+	/** Reinitialisation du dessin */
+	public void reinitialise() {
+		// Le background
+		this.image = createImage(this.getWidth(), this.getHeight());
+		Graphics gImage = this.image.getGraphics();
+		gImage.setColor(Color.WHITE);
+		gImage.fillRect(0, 0, this.getWidth(), this.getHeight());
+	}
+	
+	public void dessinerTrait(Point pointDepart, Point pointArrive, Color couleur) {
+		Graphics2D trait = (Graphics2D)this.image.getGraphics();
+		trait.scale(0.01, 0.01);
+		trait.setColor(couleur);
+		//trait.drawLine(pointDepart.x, pointDepart.y, pointArrive.x, pointArrive.y);
+		
+	}
+	
+}
