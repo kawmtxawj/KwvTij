@@ -9,3 +9,7 @@
   
   
   
+  
+  Git Hub
+  Personal access tokens (classic)
+  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
